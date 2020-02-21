@@ -1,7 +1,6 @@
-endpoint: http://localhost:4466
+endpoint: https://notes-backend-4cca1546a4.herokuapp.com/notes-backend/dev
 datamodel: datamodel.prisma
-databaseType: document
 
 generate:
-    - generator: javascript-client
-      output: ../src/generated/prisma-client
+  - generator: javascript-client
+    output: ../src/generated/prisma-client
