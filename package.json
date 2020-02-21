@@ -16,6 +16,10 @@
     "start": "node ./src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "engines": {
+    "node": ">=13.7.0",
+    "npm": ">=6.13.6"
+  },
   "author": "",
   "license": "ISC"
 }
