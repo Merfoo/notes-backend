@@ -1,0 +1,17 @@
+type User {
+    id: ID! @id
+    createdAt: DateTime! @createdAt
+    email: String! @unique
+    username: String! @unique
+    password: String!
+    notes: [Note!]!
+}
+
+type Note {
+    id: ID! @id
+    createdAt: DateTime! @createdAt
+    createdBy: User! @relation(link: INLINE)
+    titleId: String! @unique
+    title: String!
+    body: String!
+}
