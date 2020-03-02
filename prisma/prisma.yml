@@ -1,4 +1,4 @@
-endpoint: https://notes-prisma-781bb0b833.herokuapp.com/notes-prisma/dev
+endpoint: https://notes-prisma-1d3d7de81c.herokuapp.com/notes-backend/dev
 datamodel: datamodel.prisma
 
 generate:
