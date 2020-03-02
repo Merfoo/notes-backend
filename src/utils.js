@@ -2,7 +2,10 @@ const jwt = require("jsonwebtoken");
 const APP_SECRET = "some secret secret :)"
 
 function getUserId(context) {
-    const authorization = context.require.get("Authorization");
+
+    console.log("in get user id, context require: " , context.request);
+    const authorization = context.request.get("Authorization");
+
 
     if (authorization) {
         const token = authorization.replace("Bearer ", "");
