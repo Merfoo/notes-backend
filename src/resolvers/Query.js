@@ -1,11 +1,16 @@
 
-async function notes(parent, { filter, skip, first, orderBy }, context) {
-    const where = filter ? {
-        OR: [
+async function getNotes(parent, { username, filter, skip, first, orderBy }, context) {
+    let where = {};
+
+    if (username)
+        where["createdBy"] = { username };
+
+    if (filter) {
+        where["OR"] = [
             { title_contains: filter },
             { body_contains: filter }
-        ]
-    } : {};
+        ];
+    }
 
     const notes = await context.prisma.notes({
         where,
@@ -28,5 +33,5 @@ async function notes(parent, { filter, skip, first, orderBy }, context) {
 }
 
 module.exports = {
-    notes
+    getNotes
 };

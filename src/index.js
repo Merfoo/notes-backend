@@ -6,12 +6,7 @@ const resolvers = require("./resolvers");
 const server = new GraphQLServer({
     typeDefs: "./src/schema.graphql",
     resolvers,
-    context: request => {
-        return {
-            ...request,
-            prisma
-        };
-    }
+    context: request => ({ ...request, prisma })
 });
 
 server.start(() => console.log("Server running on http://localhost:4000"));
