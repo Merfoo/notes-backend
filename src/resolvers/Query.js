@@ -32,6 +32,11 @@ async function getNotes(parent, { username, filter, skip, first, orderBy }, cont
     };
 }
 
+async function getUser(parent, { username }, context) {
+    return await context.prisma.user({ username });
+}
+
 module.exports = {
-    getNotes
+    getNotes,
+    getUser
 };

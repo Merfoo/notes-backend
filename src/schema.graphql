@@ -1,5 +1,6 @@
 type Query {
     getNotes(username: String, filter: String, skip: Int, first: Int, orderBy: NoteOrderByInput): Notes!
+    getUser(username: String!): User
 }
 
 type Mutation {
