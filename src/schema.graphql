@@ -1,5 +1,6 @@
 type Query {
-    notes: [Note!]!
+    getNotes(username: String, filter: String, skip: Int, first: Int, orderBy: NoteOrderByInput): Notes!
+    getUser(username: String!): User
 }
 
 type Mutation {
@@ -17,6 +18,15 @@ type User {
     notes: [Note!]!
 }
 
+enum NoteOrderByInput {
+    createdAt_ASC
+    createdAt_DESC
+    title_ASC
+    title_DESC
+    body_ASC
+    body_DESC
+}
+
 type Note {
     id: ID!
     createdAt: String!
@@ -24,6 +34,11 @@ type Note {
     titleId: String!
     title: String!
     body: String!
+}
+
+type Notes {
+    notes: [Note!]!
+    count: Int!
 }
 
 type AuthPayload {
