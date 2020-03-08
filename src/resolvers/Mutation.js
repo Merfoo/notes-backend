@@ -1,6 +1,6 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { APP_SECRET } = require("../utils");
+const { APP_SECRET, getUserId } = require("../utils");
 
 async function signup(parent, { email, username, password }, context) {
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -38,7 +38,21 @@ async function login(parent, { email, password }, context) {
     };
 }
 
+async function createNote(parent, { titleId, title, body }, context){
+    const userId = getUserId(context);
+
+    const note = await context.prisma.createNote({
+        createdBy: { connect: { id: userId } },
+        titleId,
+        title,
+        body
+    });
+
+    return note;
+}
+
 module.exports = {
     signup,
-    login
+    login,
+    createNote
 };
