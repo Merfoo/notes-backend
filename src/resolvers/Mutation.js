@@ -66,14 +66,9 @@ async function updateNote(parent, { titleId, body }, context){
     return note;
 }
 
-async function deleteNote(parent, {id}, context){
-
-}
-
 module.exports = {
     signup,
     login,
     createNote,
     updateNote,
-  //  deleteNote
 };
