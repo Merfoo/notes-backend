@@ -38,7 +38,7 @@ async function login(parent, { email, password }, context) {
     };
 }
 
-async function createNote(parent, {titleId, title, body}, context){
+async function createNote(parent, { titleId, title, body }, context){
     const userId = getUserId(context);
 
     const note = await context.prisma.createNote({
