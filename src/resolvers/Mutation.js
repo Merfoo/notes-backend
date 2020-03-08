@@ -39,11 +39,10 @@ async function login(parent, { email, password }, context) {
 }
 
 async function createNote(parent, {titleId, title, body}, context){
-
     const userId = getUserId(context);
 
     const note = await context.prisma.createNote({
-        createdBy: {connect: {id: userId}},
+        createdBy: { connect: { id: userId } },
         titleId,
         title,
         body
@@ -52,18 +51,8 @@ async function createNote(parent, {titleId, title, body}, context){
     return note;
 }
 
-
-async function editNote(parent, {titleId, title, body}, context){
-}
-
-async function deleteNote(parent, {id}, context){
-
-}
-
 module.exports = {
     signup,
     login,
-    createNote,
-  //  editNote,
-  //  deleteNote
+    createNote
 };

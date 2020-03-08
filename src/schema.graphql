@@ -9,7 +9,6 @@ type Mutation {
     createNote(titleId: String!, title: String!, body: String!): Note!
 }
 
-
 type User {
     id: ID!
     createdAt: String!
