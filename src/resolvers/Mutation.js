@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { APP_SECRET, getUserId } = require("../utils");
+const { generateCombination } = require("gfycat-style-urls");
 
 async function signup(parent, { email, username, password }, context) {
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -38,8 +39,9 @@ async function login(parent, { email, password }, context) {
     };
 }
 
-async function createNote(parent, { titleId, title, body }, context){
+async function createNote(parent, { title, body }, context){
     const userId = getUserId(context);
+    const titleId = `${title}-${generateCombination(2, "").toLowerCase()}`;
 
     const note = await context.prisma.createNote({
         createdBy: { connect: { id: userId } },
