@@ -53,7 +53,14 @@ async function createNote(parent, {titleId, title, body}, context){
 }
 
 
-async function editNote(parent, {titleId, title, body}, context){
+async function updateNote(parent, {titleId, body}, context){
+    
+    const note = await context.prisma.updateNote({
+        data: {body},
+        where: {titleId}
+    });
+
+    return note;
 }
 
 async function deleteNote(parent, {id}, context){
@@ -64,6 +71,6 @@ module.exports = {
     signup,
     login,
     createNote,
-  //  editNote,
+    updateNote,
   //  deleteNote
 };

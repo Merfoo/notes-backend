@@ -7,6 +7,7 @@ type Mutation {
     signup(email: String!, username: String!, password: String!): AuthPayload!
     login(email: String!, password: String!): AuthPayload!
     createNote(titleId: String!, title: String!, body: String!): Note!
+    updateNote(titleId: String!, body: String!): Note!
 }
 
 
