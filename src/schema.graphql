@@ -10,7 +10,6 @@ type Mutation {
     deleteNote(titleId: String!): String!
 }
 
-
 type User {
     id: ID!
     createdAt: String!
