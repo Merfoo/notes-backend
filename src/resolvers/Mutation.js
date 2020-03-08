@@ -38,12 +38,11 @@ async function login(parent, { email, password }, context) {
     };
 }
 
-async function createNote(parent, {titleId, title, body}, context){
-
+async function createNote(parent, { titleId, title, body }, context){
     const userId = getUserId(context);
 
     const note = await context.prisma.createNote({
-        createdBy: {connect: {id: userId}},
+        createdBy: { connect: { id: userId } },
         titleId,
         title,
         body
@@ -52,11 +51,12 @@ async function createNote(parent, {titleId, title, body}, context){
     return note;
 }
 
+async function deleteNote(parent, { titleId }, context){
+    const userId = getUserId(context);
+    const { id: noteUserId } = await context.prisma.note({ titleId }).createdBy();
 
-async function editNote(parent, {titleId}, context){
-}
-
-async function deleteNote(parent, {titleId}, context){
+    if (userId != noteUserId)
+        throw new Error("Invalid user! Change this message");
 
     const note = await context.prisma.deleteNote({
         titleId
@@ -69,6 +69,5 @@ module.exports = {
     signup,
     login,
     createNote,
-  //  editNote,
     deleteNote
 };
