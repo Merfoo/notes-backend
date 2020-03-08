@@ -53,10 +53,9 @@ async function createNote(parent, { titleId, title, body }, context){
 
 async function updateNote(parent, { titleId, body }, context){
     const userId = getUserId(context);
+    const { id: noteUserId } = await context.prisma.note({ titleId }).createdBy();
 
-    const userIdOfNote = await context.prisma.note({ titleId }).createdBy().id;
-
-    if (userId != userIdOfNote)
+    if (userId != noteUserId)
         throw new Error("Invalid user! Change this message");
 
     const note = await context.prisma.updateNote({
