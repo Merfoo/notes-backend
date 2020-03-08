@@ -3,9 +3,7 @@ const APP_SECRET = process.env.JWT_APP_SECRET;
 
 function getUserId(context) {
 
-    console.log("in get user id, context require: " , context.request);
     const authorization = context.request.get("Authorization");
-
 
     if (authorization) {
         const token = authorization.replace("Bearer ", "");

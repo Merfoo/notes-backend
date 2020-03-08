@@ -42,8 +42,6 @@ async function createNote(parent, {titleId, title, body}, context){
 
     const userId = getUserId(context);
 
-    console.log("HERE: ", title, " ", titleId, " ", body);
-
     const note = await context.prisma.createNote({
         createdBy: {connect: {id: userId}},
         titleId,
@@ -51,26 +49,11 @@ async function createNote(parent, {titleId, title, body}, context){
         body
     });
 
-    console.log("NOTE: ", note);
-
-    return {
-        note
-    };
+    return note;
 }
 
 
 async function editNote(parent, {titleId, title, body}, context){
-
-    /*reference: 
-        const user = await ctx.prisma.updateUser({
-    where: {
-        name: "John Doe"
-    },
-    data: {
-        password: newPassword
-    }
-    })
-    */
 }
 
 async function deleteNote(parent, {id}, context){
