@@ -84,9 +84,6 @@ module.exports = {
     signup,
     login,
     createNote,
-<<<<<<< HEAD
     updateNote,
-=======
->>>>>>> 1babf9eebc1630a40fc57cb1a632feda309976ad
     deleteNote
 };
