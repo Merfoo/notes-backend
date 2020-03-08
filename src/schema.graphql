@@ -8,6 +8,7 @@ type Mutation {
     login(email: String!, password: String!): AuthPayload!
     createNote(titleId: String!, title: String!, body: String!): Note!
     updateNote(titleId: String!, body: String!): Note!
+    deleteNote(titleId: String!): String!
 }
 
 type User {
