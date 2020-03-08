@@ -55,7 +55,7 @@ async function deleteNote(parent, { titleId }, context){
     const userId = getUserId(context);
     const { id: noteUserId } = await context.prisma.note({ titleId }).createdBy();
 
-    if (userId != noteUserId)
+    if (userId !== noteUserId)
         throw new Error("Invalid user! Change this message");
 
     const note = await context.prisma.deleteNote({
