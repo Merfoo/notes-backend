@@ -73,7 +73,17 @@ async function emailPasswordReset(parent, { email }, context) {
                 accessToken: process.env.GMAIL_ACCESS_TOKEN
             }
         });
-        
+
+        // Temp for debugging heroku
+        console.log({
+            type: "OAuth2",
+            user: process.env.GMAIL_USER,
+            clientId: process.env.GMAIL_CLIENT_ID,
+            clientSecret: process.env.GMAIL_CLIENT_SECRET,
+            refreshToken: process.env.GMAIL_REFRESH_TOKEN,
+            accessToken: process.env.GMAIL_ACCESS_TOKEN
+        });
+
         // Create password reset link
         const baseUrl = process.env.BASE_URL;
         const passwordResetLink = `${baseUrl}/account/reset_password/${resetId}`;
