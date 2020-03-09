@@ -26,12 +26,12 @@ async function login(parent, { email, password }, context) {
     const user = await context.prisma.user({ email });
 
     if (!user)
-        throw new Error("Invalid user! Change this message");
+        throw new Error("Invalid credentials");
 
     const validPassword = await bcrypt.compare(password, user.password);
 
     if (!validPassword)
-        throw new Error("Invalid password! Change this message");
+        throw new Error("Invalid credentials");
 
     const token = jwt.sign({ userId: user.id }, APP_SECRET);
 
@@ -131,7 +131,7 @@ async function resetPassword(parent, { resetId, password }, context) {
 
 async function createNote(parent, { title, body }, context){
     const userId = getUserId(context);
-    const titleId = `${title}-${generateCombination(2, "").toLowerCase()}`;
+    const titleId = `${title.replace(/ /g, "-")}-${generateCombination(2, "")}`.toLowerCase();
 
     const note = await context.prisma.createNote({
         createdBy: { connect: { id: userId } },
@@ -148,7 +148,7 @@ async function updateNote(parent, { titleId, body }, context){
     const { id: noteUserId } = await context.prisma.note({ titleId }).createdBy();
 
     if (userId !== noteUserId)
-        throw new Error("Invalid user! Change this message");
+        throw new Error("Unauthorized user");
 
     const note = await context.prisma.updateNote({
         data: { body },
@@ -163,7 +163,7 @@ async function deleteNote(parent, { titleId }, context){
     const { id: noteUserId } = await context.prisma.note({ titleId }).createdBy();
 
     if (userId !== noteUserId)
-        throw new Error("Invalid user! Change this message");
+        throw new Error("Unauthorized user");
 
     const note = await context.prisma.deleteNote({
         titleId
