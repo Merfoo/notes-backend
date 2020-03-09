@@ -93,7 +93,12 @@ async function emailPasswordReset(parent, { email }, context) {
 
         // Delete PasswordReset entry after it expires
         setTimeout(async () => {
-            await context.prisma.deletePasswordReset({ resetId });
+            // Entry could have been deleted already
+            try {
+                await context.prisma.deletePasswordReset({ resetId });
+            }
+
+            catch (e) {}
         }, expireMinutes * 60 * 1000);
     }
 
@@ -101,6 +106,8 @@ async function emailPasswordReset(parent, { email }, context) {
 }
 
 async function resetPassword(parent, { resetId, password }, context) {
+    let res = null;
+
     const passwordReset = await context.prisma.passwordReset({ resetId });
 
     if (passwordReset) {
@@ -119,14 +126,18 @@ async function resetPassword(parent, { resetId, password }, context) {
 
             const token = jwt.sign({ userId: user.id }, APP_SECRET);
 
-            return {
-                token,
-                user
-            };
+            res = { token, user };
         }
+
+        // Entry could have been deleted already
+        try {
+            await context.prisma.deletePasswordReset({ resetId });
+        }
+
+        catch (e) {}
     }
 
-    return null;
+    return res;
 }
 
 async function createNote(parent, { title, body }, context){
