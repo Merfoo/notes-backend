@@ -46,14 +46,14 @@ async function emailPasswordReset(parent, { email }, context) {
 
     if (user) {
         // Create PasswordReset fields
-        const expireMinutes = 1;
+        const expireMinutes = 5;
         const resetId = nanoid();
         
         let expireDate = new Date();
         expireDate.setMinutes(expireDate.getMinutes() + expireMinutes);
         
         // Create PasswordReset entry
-        const passwordReset = await context.prisma.createPasswordReset({
+        await context.prisma.createPasswordReset({
             resetId,
             user: { connect: { id: user.id } },
             expireDate: expireDate.toISOString()
@@ -61,10 +61,16 @@ async function emailPasswordReset(parent, { email }, context) {
         
         // Create transporter for sending email
         const transporter = nodemailer.createTransport({
-            service: "gmail",
+            host: "smtp.gmail.com",
+            port: 465,
+            secure: true,
             auth: {
+                type: "OAuth2",
                 user: process.env.GMAIL_USER,
-                pass: process.env.GMAIL_PASS
+                clientId: process.env.GMAIL_CLIENT_ID,
+                clientSecret: process.env.GMAIL_CLIENT_SECRET,
+                refreshToken: process.env.GMAIL_REFRESH_TOKEN,
+                accessToken: process.env.GMAIL_ACCESS_TOKEN
             }
         });
         
