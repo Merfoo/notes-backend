@@ -7,6 +7,10 @@ module.exports = {
   count: Int!
 }
 
+type AggregatePasswordReset {
+  count: Int!
+}
+
 type AggregateUser {
   count: Int!
 }
@@ -26,6 +30,12 @@ type Mutation {
   upsertNote(where: NoteWhereUniqueInput!, create: NoteCreateInput!, update: NoteUpdateInput!): Note!
   deleteNote(where: NoteWhereUniqueInput!): Note
   deleteManyNotes(where: NoteWhereInput): BatchPayload!
+  createPasswordReset(data: PasswordResetCreateInput!): PasswordReset!
+  updatePasswordReset(data: PasswordResetUpdateInput!, where: PasswordResetWhereUniqueInput!): PasswordReset
+  updateManyPasswordResets(data: PasswordResetUpdateManyMutationInput!, where: PasswordResetWhereInput): BatchPayload!
+  upsertPasswordReset(where: PasswordResetWhereUniqueInput!, create: PasswordResetCreateInput!, update: PasswordResetUpdateInput!): PasswordReset!
+  deletePasswordReset(where: PasswordResetWhereUniqueInput!): PasswordReset
+  deleteManyPasswordResets(where: PasswordResetWhereInput): BatchPayload!
   createUser(data: UserCreateInput!): User!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
@@ -329,10 +339,221 @@ type PageInfo {
   endCursor: String
 }
 
+type PasswordReset {
+  id: ID!
+  resetId: String!
+  user: User!
+  expireDate: DateTime!
+}
+
+type PasswordResetConnection {
+  pageInfo: PageInfo!
+  edges: [PasswordResetEdge]!
+  aggregate: AggregatePasswordReset!
+}
+
+input PasswordResetCreateInput {
+  id: ID
+  resetId: String!
+  user: UserCreateOneWithoutPasswordResetsInput!
+  expireDate: DateTime!
+}
+
+input PasswordResetCreateManyWithoutUserInput {
+  create: [PasswordResetCreateWithoutUserInput!]
+  connect: [PasswordResetWhereUniqueInput!]
+}
+
+input PasswordResetCreateWithoutUserInput {
+  id: ID
+  resetId: String!
+  expireDate: DateTime!
+}
+
+type PasswordResetEdge {
+  node: PasswordReset!
+  cursor: String!
+}
+
+enum PasswordResetOrderByInput {
+  id_ASC
+  id_DESC
+  resetId_ASC
+  resetId_DESC
+  expireDate_ASC
+  expireDate_DESC
+}
+
+type PasswordResetPreviousValues {
+  id: ID!
+  resetId: String!
+  expireDate: DateTime!
+}
+
+input PasswordResetScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  resetId: String
+  resetId_not: String
+  resetId_in: [String!]
+  resetId_not_in: [String!]
+  resetId_lt: String
+  resetId_lte: String
+  resetId_gt: String
+  resetId_gte: String
+  resetId_contains: String
+  resetId_not_contains: String
+  resetId_starts_with: String
+  resetId_not_starts_with: String
+  resetId_ends_with: String
+  resetId_not_ends_with: String
+  expireDate: DateTime
+  expireDate_not: DateTime
+  expireDate_in: [DateTime!]
+  expireDate_not_in: [DateTime!]
+  expireDate_lt: DateTime
+  expireDate_lte: DateTime
+  expireDate_gt: DateTime
+  expireDate_gte: DateTime
+  AND: [PasswordResetScalarWhereInput!]
+  OR: [PasswordResetScalarWhereInput!]
+  NOT: [PasswordResetScalarWhereInput!]
+}
+
+type PasswordResetSubscriptionPayload {
+  mutation: MutationType!
+  node: PasswordReset
+  updatedFields: [String!]
+  previousValues: PasswordResetPreviousValues
+}
+
+input PasswordResetSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: PasswordResetWhereInput
+  AND: [PasswordResetSubscriptionWhereInput!]
+  OR: [PasswordResetSubscriptionWhereInput!]
+  NOT: [PasswordResetSubscriptionWhereInput!]
+}
+
+input PasswordResetUpdateInput {
+  resetId: String
+  user: UserUpdateOneRequiredWithoutPasswordResetsInput
+  expireDate: DateTime
+}
+
+input PasswordResetUpdateManyDataInput {
+  resetId: String
+  expireDate: DateTime
+}
+
+input PasswordResetUpdateManyMutationInput {
+  resetId: String
+  expireDate: DateTime
+}
+
+input PasswordResetUpdateManyWithoutUserInput {
+  create: [PasswordResetCreateWithoutUserInput!]
+  delete: [PasswordResetWhereUniqueInput!]
+  connect: [PasswordResetWhereUniqueInput!]
+  set: [PasswordResetWhereUniqueInput!]
+  disconnect: [PasswordResetWhereUniqueInput!]
+  update: [PasswordResetUpdateWithWhereUniqueWithoutUserInput!]
+  upsert: [PasswordResetUpsertWithWhereUniqueWithoutUserInput!]
+  deleteMany: [PasswordResetScalarWhereInput!]
+  updateMany: [PasswordResetUpdateManyWithWhereNestedInput!]
+}
+
+input PasswordResetUpdateManyWithWhereNestedInput {
+  where: PasswordResetScalarWhereInput!
+  data: PasswordResetUpdateManyDataInput!
+}
+
+input PasswordResetUpdateWithoutUserDataInput {
+  resetId: String
+  expireDate: DateTime
+}
+
+input PasswordResetUpdateWithWhereUniqueWithoutUserInput {
+  where: PasswordResetWhereUniqueInput!
+  data: PasswordResetUpdateWithoutUserDataInput!
+}
+
+input PasswordResetUpsertWithWhereUniqueWithoutUserInput {
+  where: PasswordResetWhereUniqueInput!
+  update: PasswordResetUpdateWithoutUserDataInput!
+  create: PasswordResetCreateWithoutUserInput!
+}
+
+input PasswordResetWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  resetId: String
+  resetId_not: String
+  resetId_in: [String!]
+  resetId_not_in: [String!]
+  resetId_lt: String
+  resetId_lte: String
+  resetId_gt: String
+  resetId_gte: String
+  resetId_contains: String
+  resetId_not_contains: String
+  resetId_starts_with: String
+  resetId_not_starts_with: String
+  resetId_ends_with: String
+  resetId_not_ends_with: String
+  user: UserWhereInput
+  expireDate: DateTime
+  expireDate_not: DateTime
+  expireDate_in: [DateTime!]
+  expireDate_not_in: [DateTime!]
+  expireDate_lt: DateTime
+  expireDate_lte: DateTime
+  expireDate_gt: DateTime
+  expireDate_gte: DateTime
+  AND: [PasswordResetWhereInput!]
+  OR: [PasswordResetWhereInput!]
+  NOT: [PasswordResetWhereInput!]
+}
+
+input PasswordResetWhereUniqueInput {
+  id: ID
+  resetId: String
+}
+
 type Query {
   note(where: NoteWhereUniqueInput!): Note
   notes(where: NoteWhereInput, orderBy: NoteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Note]!
   notesConnection(where: NoteWhereInput, orderBy: NoteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): NoteConnection!
+  passwordReset(where: PasswordResetWhereUniqueInput!): PasswordReset
+  passwordResets(where: PasswordResetWhereInput, orderBy: PasswordResetOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [PasswordReset]!
+  passwordResetsConnection(where: PasswordResetWhereInput, orderBy: PasswordResetOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PasswordResetConnection!
   user(where: UserWhereUniqueInput!): User
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
@@ -341,6 +562,7 @@ type Query {
 
 type Subscription {
   note(where: NoteSubscriptionWhereInput): NoteSubscriptionPayload
+  passwordReset(where: PasswordResetSubscriptionWhereInput): PasswordResetSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
 }
 
@@ -351,6 +573,7 @@ type User {
   username: String!
   password: String!
   notes(where: NoteWhereInput, orderBy: NoteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Note!]
+  passwordResets(where: PasswordResetWhereInput, orderBy: PasswordResetOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [PasswordReset!]
 }
 
 type UserConnection {
@@ -365,10 +588,16 @@ input UserCreateInput {
   username: String!
   password: String!
   notes: NoteCreateManyWithoutCreatedByInput
+  passwordResets: PasswordResetCreateManyWithoutUserInput
 }
 
 input UserCreateOneWithoutNotesInput {
   create: UserCreateWithoutNotesInput
+  connect: UserWhereUniqueInput
+}
+
+input UserCreateOneWithoutPasswordResetsInput {
+  create: UserCreateWithoutPasswordResetsInput
   connect: UserWhereUniqueInput
 }
 
@@ -377,6 +606,15 @@ input UserCreateWithoutNotesInput {
   email: String!
   username: String!
   password: String!
+  passwordResets: PasswordResetCreateManyWithoutUserInput
+}
+
+input UserCreateWithoutPasswordResetsInput {
+  id: ID
+  email: String!
+  username: String!
+  password: String!
+  notes: NoteCreateManyWithoutCreatedByInput
 }
 
 type UserEdge {
@@ -428,6 +666,7 @@ input UserUpdateInput {
   username: String
   password: String
   notes: NoteUpdateManyWithoutCreatedByInput
+  passwordResets: PasswordResetUpdateManyWithoutUserInput
 }
 
 input UserUpdateManyMutationInput {
@@ -443,15 +682,35 @@ input UserUpdateOneRequiredWithoutNotesInput {
   connect: UserWhereUniqueInput
 }
 
+input UserUpdateOneRequiredWithoutPasswordResetsInput {
+  create: UserCreateWithoutPasswordResetsInput
+  update: UserUpdateWithoutPasswordResetsDataInput
+  upsert: UserUpsertWithoutPasswordResetsInput
+  connect: UserWhereUniqueInput
+}
+
 input UserUpdateWithoutNotesDataInput {
   email: String
   username: String
   password: String
+  passwordResets: PasswordResetUpdateManyWithoutUserInput
+}
+
+input UserUpdateWithoutPasswordResetsDataInput {
+  email: String
+  username: String
+  password: String
+  notes: NoteUpdateManyWithoutCreatedByInput
 }
 
 input UserUpsertWithoutNotesInput {
   update: UserUpdateWithoutNotesDataInput!
   create: UserCreateWithoutNotesInput!
+}
+
+input UserUpsertWithoutPasswordResetsInput {
+  update: UserUpdateWithoutPasswordResetsDataInput!
+  create: UserCreateWithoutPasswordResetsInput!
 }
 
 input UserWhereInput {
@@ -522,6 +781,9 @@ input UserWhereInput {
   notes_every: NoteWhereInput
   notes_some: NoteWhereInput
   notes_none: NoteWhereInput
+  passwordResets_every: PasswordResetWhereInput
+  passwordResets_some: PasswordResetWhereInput
+  passwordResets_none: PasswordResetWhereInput
   AND: [UserWhereInput!]
   OR: [UserWhereInput!]
   NOT: [UserWhereInput!]

@@ -1,7 +1,9 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { APP_SECRET, getUserId } = require("../utils");
+const nodemailer = require("nodemailer");
+const nanoid = require("nanoid");
 const { generateCombination } = require("gfycat-style-urls");
+const { APP_SECRET, getUserId } = require("../utils");
 
 async function signup(parent, { email, username, password }, context) {
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -37,6 +39,91 @@ async function login(parent, { email, password }, context) {
         token,
         user
     };
+}
+
+async function emailPasswordReset(parent, { email }, context) {
+    const user = await context.prisma.user({ email });
+
+    if (user) {
+        // Create PasswordReset fields
+        const expireMinutes = 1;
+        const resetId = nanoid();
+        
+        let expireDate = new Date();
+        expireDate.setMinutes(expireDate.getMinutes() + expireMinutes);
+        
+        // Create PasswordReset entry
+        const passwordReset = await context.prisma.createPasswordReset({
+            resetId,
+            user: { connect: { id: user.id } },
+            expireDate: expireDate.toISOString()
+        });
+        
+        // Create transporter for sending email
+        const transporter = nodemailer.createTransport({
+            service: "gmail",
+            auth: {
+                user: process.env.GMAIL_USER,
+                pass: process.env.GMAIL_PASS
+            }
+        });
+        
+        // Create password reset link
+        const baseUrl = process.env.BASE_URL;
+        const passwordResetLink = `${baseUrl}/account/reset_password/${resetId}`;
+        
+        // Create email
+        const mailOptions = {
+            to: user.email,
+            subject: "Notes Account Password Reset",
+            html: `Hello ${user.username},<br><br>You have requested a password reset <a href="${passwordResetLink}">link</a>.<br>This link expires in ${expireMinutes} minutes.`
+        };
+
+        // Send email
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error)
+                console.log("Send email error", error);
+            
+            else
+                console.log("Send email success", info);
+        });
+
+        // Delete PasswordReset entry after it expires
+        setTimeout(async () => {
+            await context.prisma.deletePasswordReset({ resetId });
+        }, expireMinutes * 60 * 1000);
+    }
+
+    return email;
+}
+
+async function resetPassword(parent, { resetId, password }, context) {
+    const passwordReset = await context.prisma.passwordReset({ resetId });
+
+    if (passwordReset) {
+        const nowDate = new Date();
+        const expireDate = new Date(passwordReset.expireDate);
+
+        const passwordResetUser = await context.prisma.passwordReset({ resetId }).user();
+
+        if (nowDate <= expireDate) {
+            const hashedPassword = await bcrypt.hash(password, 10);
+
+            const user = await context.prisma.updateUser({ 
+                data: { password: hashedPassword },
+                where: { id: passwordResetUser.id }
+            });
+
+            const token = jwt.sign({ userId: user.id }, APP_SECRET);
+
+            return {
+                token,
+                user
+            };
+        }
+    }
+
+    return null;
 }
 
 async function createNote(parent, { title, body }, context){
@@ -85,6 +172,8 @@ async function deleteNote(parent, { titleId }, context){
 module.exports = {
     signup,
     login,
+    emailPasswordReset,
+    resetPassword,
     createNote,
     updateNote,
     deleteNote

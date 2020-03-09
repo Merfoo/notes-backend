@@ -17,6 +17,7 @@ export type Maybe<T> = T | undefined | null;
 
 export interface Exists {
   note: (where?: NoteWhereInput) => Promise<boolean>;
+  passwordReset: (where?: PasswordResetWhereInput) => Promise<boolean>;
   user: (where?: UserWhereInput) => Promise<boolean>;
 }
 
@@ -58,6 +59,27 @@ export interface Prisma {
     first?: Int;
     last?: Int;
   }) => NoteConnectionPromise;
+  passwordReset: (
+    where: PasswordResetWhereUniqueInput
+  ) => PasswordResetNullablePromise;
+  passwordResets: (args?: {
+    where?: PasswordResetWhereInput;
+    orderBy?: PasswordResetOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FragmentableArray<PasswordReset>;
+  passwordResetsConnection: (args?: {
+    where?: PasswordResetWhereInput;
+    orderBy?: PasswordResetOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => PasswordResetConnectionPromise;
   user: (where: UserWhereUniqueInput) => UserNullablePromise;
   users: (args?: {
     where?: UserWhereInput;
@@ -99,6 +121,26 @@ export interface Prisma {
   }) => NotePromise;
   deleteNote: (where: NoteWhereUniqueInput) => NotePromise;
   deleteManyNotes: (where?: NoteWhereInput) => BatchPayloadPromise;
+  createPasswordReset: (data: PasswordResetCreateInput) => PasswordResetPromise;
+  updatePasswordReset: (args: {
+    data: PasswordResetUpdateInput;
+    where: PasswordResetWhereUniqueInput;
+  }) => PasswordResetPromise;
+  updateManyPasswordResets: (args: {
+    data: PasswordResetUpdateManyMutationInput;
+    where?: PasswordResetWhereInput;
+  }) => BatchPayloadPromise;
+  upsertPasswordReset: (args: {
+    where: PasswordResetWhereUniqueInput;
+    create: PasswordResetCreateInput;
+    update: PasswordResetUpdateInput;
+  }) => PasswordResetPromise;
+  deletePasswordReset: (
+    where: PasswordResetWhereUniqueInput
+  ) => PasswordResetPromise;
+  deleteManyPasswordResets: (
+    where?: PasswordResetWhereInput
+  ) => BatchPayloadPromise;
   createUser: (data: UserCreateInput) => UserPromise;
   updateUser: (args: {
     data: UserUpdateInput;
@@ -127,6 +169,9 @@ export interface Subscription {
   note: (
     where?: NoteSubscriptionWhereInput
   ) => NoteSubscriptionPayloadSubscription;
+  passwordReset: (
+    where?: PasswordResetSubscriptionWhereInput
+  ) => PasswordResetSubscriptionPayloadSubscription;
   user: (
     where?: UserSubscriptionWhereInput
   ) => UserSubscriptionPayloadSubscription;
@@ -151,6 +196,14 @@ export type NoteOrderByInput =
   | "title_DESC"
   | "body_ASC"
   | "body_DESC";
+
+export type PasswordResetOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "resetId_ASC"
+  | "resetId_DESC"
+  | "expireDate_ASC"
+  | "expireDate_DESC";
 
 export type UserOrderByInput =
   | "id_ASC"
@@ -310,10 +363,61 @@ export interface UserWhereInput {
   notes_every?: Maybe<NoteWhereInput>;
   notes_some?: Maybe<NoteWhereInput>;
   notes_none?: Maybe<NoteWhereInput>;
+  passwordResets_every?: Maybe<PasswordResetWhereInput>;
+  passwordResets_some?: Maybe<PasswordResetWhereInput>;
+  passwordResets_none?: Maybe<PasswordResetWhereInput>;
   AND?: Maybe<UserWhereInput[] | UserWhereInput>;
   OR?: Maybe<UserWhereInput[] | UserWhereInput>;
   NOT?: Maybe<UserWhereInput[] | UserWhereInput>;
 }
+
+export interface PasswordResetWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  resetId?: Maybe<String>;
+  resetId_not?: Maybe<String>;
+  resetId_in?: Maybe<String[] | String>;
+  resetId_not_in?: Maybe<String[] | String>;
+  resetId_lt?: Maybe<String>;
+  resetId_lte?: Maybe<String>;
+  resetId_gt?: Maybe<String>;
+  resetId_gte?: Maybe<String>;
+  resetId_contains?: Maybe<String>;
+  resetId_not_contains?: Maybe<String>;
+  resetId_starts_with?: Maybe<String>;
+  resetId_not_starts_with?: Maybe<String>;
+  resetId_ends_with?: Maybe<String>;
+  resetId_not_ends_with?: Maybe<String>;
+  user?: Maybe<UserWhereInput>;
+  expireDate?: Maybe<DateTimeInput>;
+  expireDate_not?: Maybe<DateTimeInput>;
+  expireDate_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  expireDate_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  expireDate_lt?: Maybe<DateTimeInput>;
+  expireDate_lte?: Maybe<DateTimeInput>;
+  expireDate_gt?: Maybe<DateTimeInput>;
+  expireDate_gte?: Maybe<DateTimeInput>;
+  AND?: Maybe<PasswordResetWhereInput[] | PasswordResetWhereInput>;
+  OR?: Maybe<PasswordResetWhereInput[] | PasswordResetWhereInput>;
+  NOT?: Maybe<PasswordResetWhereInput[] | PasswordResetWhereInput>;
+}
+
+export type PasswordResetWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+  resetId?: Maybe<String>;
+}>;
 
 export type UserWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
@@ -339,6 +443,22 @@ export interface UserCreateWithoutNotesInput {
   email: String;
   username: String;
   password: String;
+  passwordResets?: Maybe<PasswordResetCreateManyWithoutUserInput>;
+}
+
+export interface PasswordResetCreateManyWithoutUserInput {
+  create?: Maybe<
+    PasswordResetCreateWithoutUserInput[] | PasswordResetCreateWithoutUserInput
+  >;
+  connect?: Maybe<
+    PasswordResetWhereUniqueInput[] | PasswordResetWhereUniqueInput
+  >;
+}
+
+export interface PasswordResetCreateWithoutUserInput {
+  id?: Maybe<ID_Input>;
+  resetId: String;
+  expireDate: DateTimeInput;
 }
 
 export interface NoteUpdateInput {
@@ -359,6 +479,106 @@ export interface UserUpdateWithoutNotesDataInput {
   email?: Maybe<String>;
   username?: Maybe<String>;
   password?: Maybe<String>;
+  passwordResets?: Maybe<PasswordResetUpdateManyWithoutUserInput>;
+}
+
+export interface PasswordResetUpdateManyWithoutUserInput {
+  create?: Maybe<
+    PasswordResetCreateWithoutUserInput[] | PasswordResetCreateWithoutUserInput
+  >;
+  delete?: Maybe<
+    PasswordResetWhereUniqueInput[] | PasswordResetWhereUniqueInput
+  >;
+  connect?: Maybe<
+    PasswordResetWhereUniqueInput[] | PasswordResetWhereUniqueInput
+  >;
+  set?: Maybe<PasswordResetWhereUniqueInput[] | PasswordResetWhereUniqueInput>;
+  disconnect?: Maybe<
+    PasswordResetWhereUniqueInput[] | PasswordResetWhereUniqueInput
+  >;
+  update?: Maybe<
+    | PasswordResetUpdateWithWhereUniqueWithoutUserInput[]
+    | PasswordResetUpdateWithWhereUniqueWithoutUserInput
+  >;
+  upsert?: Maybe<
+    | PasswordResetUpsertWithWhereUniqueWithoutUserInput[]
+    | PasswordResetUpsertWithWhereUniqueWithoutUserInput
+  >;
+  deleteMany?: Maybe<
+    PasswordResetScalarWhereInput[] | PasswordResetScalarWhereInput
+  >;
+  updateMany?: Maybe<
+    | PasswordResetUpdateManyWithWhereNestedInput[]
+    | PasswordResetUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface PasswordResetUpdateWithWhereUniqueWithoutUserInput {
+  where: PasswordResetWhereUniqueInput;
+  data: PasswordResetUpdateWithoutUserDataInput;
+}
+
+export interface PasswordResetUpdateWithoutUserDataInput {
+  resetId?: Maybe<String>;
+  expireDate?: Maybe<DateTimeInput>;
+}
+
+export interface PasswordResetUpsertWithWhereUniqueWithoutUserInput {
+  where: PasswordResetWhereUniqueInput;
+  update: PasswordResetUpdateWithoutUserDataInput;
+  create: PasswordResetCreateWithoutUserInput;
+}
+
+export interface PasswordResetScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  resetId?: Maybe<String>;
+  resetId_not?: Maybe<String>;
+  resetId_in?: Maybe<String[] | String>;
+  resetId_not_in?: Maybe<String[] | String>;
+  resetId_lt?: Maybe<String>;
+  resetId_lte?: Maybe<String>;
+  resetId_gt?: Maybe<String>;
+  resetId_gte?: Maybe<String>;
+  resetId_contains?: Maybe<String>;
+  resetId_not_contains?: Maybe<String>;
+  resetId_starts_with?: Maybe<String>;
+  resetId_not_starts_with?: Maybe<String>;
+  resetId_ends_with?: Maybe<String>;
+  resetId_not_ends_with?: Maybe<String>;
+  expireDate?: Maybe<DateTimeInput>;
+  expireDate_not?: Maybe<DateTimeInput>;
+  expireDate_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  expireDate_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  expireDate_lt?: Maybe<DateTimeInput>;
+  expireDate_lte?: Maybe<DateTimeInput>;
+  expireDate_gt?: Maybe<DateTimeInput>;
+  expireDate_gte?: Maybe<DateTimeInput>;
+  AND?: Maybe<PasswordResetScalarWhereInput[] | PasswordResetScalarWhereInput>;
+  OR?: Maybe<PasswordResetScalarWhereInput[] | PasswordResetScalarWhereInput>;
+  NOT?: Maybe<PasswordResetScalarWhereInput[] | PasswordResetScalarWhereInput>;
+}
+
+export interface PasswordResetUpdateManyWithWhereNestedInput {
+  where: PasswordResetScalarWhereInput;
+  data: PasswordResetUpdateManyDataInput;
+}
+
+export interface PasswordResetUpdateManyDataInput {
+  resetId?: Maybe<String>;
+  expireDate?: Maybe<DateTimeInput>;
 }
 
 export interface UserUpsertWithoutNotesInput {
@@ -372,7 +592,19 @@ export interface NoteUpdateManyMutationInput {
   body?: Maybe<String>;
 }
 
-export interface UserCreateInput {
+export interface PasswordResetCreateInput {
+  id?: Maybe<ID_Input>;
+  resetId: String;
+  user: UserCreateOneWithoutPasswordResetsInput;
+  expireDate: DateTimeInput;
+}
+
+export interface UserCreateOneWithoutPasswordResetsInput {
+  create?: Maybe<UserCreateWithoutPasswordResetsInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface UserCreateWithoutPasswordResetsInput {
   id?: Maybe<ID_Input>;
   email: String;
   username: String;
@@ -394,7 +626,20 @@ export interface NoteCreateWithoutCreatedByInput {
   body: String;
 }
 
-export interface UserUpdateInput {
+export interface PasswordResetUpdateInput {
+  resetId?: Maybe<String>;
+  user?: Maybe<UserUpdateOneRequiredWithoutPasswordResetsInput>;
+  expireDate?: Maybe<DateTimeInput>;
+}
+
+export interface UserUpdateOneRequiredWithoutPasswordResetsInput {
+  create?: Maybe<UserCreateWithoutPasswordResetsInput>;
+  update?: Maybe<UserUpdateWithoutPasswordResetsDataInput>;
+  upsert?: Maybe<UserUpsertWithoutPasswordResetsInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface UserUpdateWithoutPasswordResetsDataInput {
   email?: Maybe<String>;
   username?: Maybe<String>;
   password?: Maybe<String>;
@@ -521,6 +766,33 @@ export interface NoteUpdateManyDataInput {
   body?: Maybe<String>;
 }
 
+export interface UserUpsertWithoutPasswordResetsInput {
+  update: UserUpdateWithoutPasswordResetsDataInput;
+  create: UserCreateWithoutPasswordResetsInput;
+}
+
+export interface PasswordResetUpdateManyMutationInput {
+  resetId?: Maybe<String>;
+  expireDate?: Maybe<DateTimeInput>;
+}
+
+export interface UserCreateInput {
+  id?: Maybe<ID_Input>;
+  email: String;
+  username: String;
+  password: String;
+  notes?: Maybe<NoteCreateManyWithoutCreatedByInput>;
+  passwordResets?: Maybe<PasswordResetCreateManyWithoutUserInput>;
+}
+
+export interface UserUpdateInput {
+  email?: Maybe<String>;
+  username?: Maybe<String>;
+  password?: Maybe<String>;
+  notes?: Maybe<NoteUpdateManyWithoutCreatedByInput>;
+  passwordResets?: Maybe<PasswordResetUpdateManyWithoutUserInput>;
+}
+
 export interface UserUpdateManyMutationInput {
   email?: Maybe<String>;
   username?: Maybe<String>;
@@ -536,6 +808,23 @@ export interface NoteSubscriptionWhereInput {
   AND?: Maybe<NoteSubscriptionWhereInput[] | NoteSubscriptionWhereInput>;
   OR?: Maybe<NoteSubscriptionWhereInput[] | NoteSubscriptionWhereInput>;
   NOT?: Maybe<NoteSubscriptionWhereInput[] | NoteSubscriptionWhereInput>;
+}
+
+export interface PasswordResetSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<PasswordResetWhereInput>;
+  AND?: Maybe<
+    PasswordResetSubscriptionWhereInput[] | PasswordResetSubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    PasswordResetSubscriptionWhereInput[] | PasswordResetSubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    PasswordResetSubscriptionWhereInput[] | PasswordResetSubscriptionWhereInput
+  >;
 }
 
 export interface UserSubscriptionWhereInput {
@@ -615,6 +904,15 @@ export interface UserPromise extends Promise<User>, Fragmentable {
     first?: Int;
     last?: Int;
   }) => T;
+  passwordResets: <T = FragmentableArray<PasswordReset>>(args?: {
+    where?: PasswordResetWhereInput;
+    orderBy?: PasswordResetOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
 export interface UserSubscription
@@ -628,6 +926,17 @@ export interface UserSubscription
   notes: <T = Promise<AsyncIterator<NoteSubscription>>>(args?: {
     where?: NoteWhereInput;
     orderBy?: NoteOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  passwordResets: <
+    T = Promise<AsyncIterator<PasswordResetSubscription>>
+  >(args?: {
+    where?: PasswordResetWhereInput;
+    orderBy?: PasswordResetOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
@@ -653,6 +962,48 @@ export interface UserNullablePromise
     first?: Int;
     last?: Int;
   }) => T;
+  passwordResets: <T = FragmentableArray<PasswordReset>>(args?: {
+    where?: PasswordResetWhereInput;
+    orderBy?: PasswordResetOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface PasswordReset {
+  id: ID_Output;
+  resetId: String;
+  expireDate: DateTimeOutput;
+}
+
+export interface PasswordResetPromise
+  extends Promise<PasswordReset>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  resetId: () => Promise<String>;
+  user: <T = UserPromise>() => T;
+  expireDate: () => Promise<DateTimeOutput>;
+}
+
+export interface PasswordResetSubscription
+  extends Promise<AsyncIterator<PasswordReset>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  resetId: () => Promise<AsyncIterator<String>>;
+  user: <T = UserSubscription>() => T;
+  expireDate: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
+export interface PasswordResetNullablePromise
+  extends Promise<PasswordReset | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  resetId: () => Promise<String>;
+  user: <T = UserPromise>() => T;
+  expireDate: () => Promise<DateTimeOutput>;
 }
 
 export interface NoteConnection {
@@ -728,6 +1079,62 @@ export interface AggregateNotePromise
 
 export interface AggregateNoteSubscription
   extends Promise<AsyncIterator<AggregateNote>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface PasswordResetConnection {
+  pageInfo: PageInfo;
+  edges: PasswordResetEdge[];
+}
+
+export interface PasswordResetConnectionPromise
+  extends Promise<PasswordResetConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<PasswordResetEdge>>() => T;
+  aggregate: <T = AggregatePasswordResetPromise>() => T;
+}
+
+export interface PasswordResetConnectionSubscription
+  extends Promise<AsyncIterator<PasswordResetConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<PasswordResetEdgeSubscription>>>() => T;
+  aggregate: <T = AggregatePasswordResetSubscription>() => T;
+}
+
+export interface PasswordResetEdge {
+  node: PasswordReset;
+  cursor: String;
+}
+
+export interface PasswordResetEdgePromise
+  extends Promise<PasswordResetEdge>,
+    Fragmentable {
+  node: <T = PasswordResetPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface PasswordResetEdgeSubscription
+  extends Promise<AsyncIterator<PasswordResetEdge>>,
+    Fragmentable {
+  node: <T = PasswordResetSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregatePasswordReset {
+  count: Int;
+}
+
+export interface AggregatePasswordResetPromise
+  extends Promise<AggregatePasswordReset>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregatePasswordResetSubscription
+  extends Promise<AsyncIterator<AggregatePasswordReset>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
 }
@@ -855,6 +1262,53 @@ export interface NotePreviousValuesSubscription
   body: () => Promise<AsyncIterator<String>>;
 }
 
+export interface PasswordResetSubscriptionPayload {
+  mutation: MutationType;
+  node: PasswordReset;
+  updatedFields: String[];
+  previousValues: PasswordResetPreviousValues;
+}
+
+export interface PasswordResetSubscriptionPayloadPromise
+  extends Promise<PasswordResetSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = PasswordResetPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = PasswordResetPreviousValuesPromise>() => T;
+}
+
+export interface PasswordResetSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<PasswordResetSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = PasswordResetSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = PasswordResetPreviousValuesSubscription>() => T;
+}
+
+export interface PasswordResetPreviousValues {
+  id: ID_Output;
+  resetId: String;
+  expireDate: DateTimeOutput;
+}
+
+export interface PasswordResetPreviousValuesPromise
+  extends Promise<PasswordResetPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  resetId: () => Promise<String>;
+  expireDate: () => Promise<DateTimeOutput>;
+}
+
+export interface PasswordResetPreviousValuesSubscription
+  extends Promise<AsyncIterator<PasswordResetPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  resetId: () => Promise<AsyncIterator<String>>;
+  expireDate: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
 export interface UserSubscriptionPayload {
   mutation: MutationType;
   node: User;
@@ -952,6 +1406,10 @@ export const models: Model[] = [
   },
   {
     name: "Note",
+    embedded: false
+  },
+  {
+    name: "PasswordReset",
     embedded: false
   }
 ];

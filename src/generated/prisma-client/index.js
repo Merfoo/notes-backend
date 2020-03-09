@@ -11,6 +11,10 @@ var models = [
   {
     name: "Note",
     embedded: false
+  },
+  {
+    name: "PasswordReset",
+    embedded: false
   }
 ];
 exports.Prisma = prisma_lib_1.makePrismaClientClass({

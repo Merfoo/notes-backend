@@ -5,6 +5,7 @@ type User {
     username: String! @unique
     password: String!
     notes: [Note!]!
+    passwordResets: [PasswordReset!]!
 }
 
 type Note {
@@ -14,4 +15,11 @@ type Note {
     titleId: String! @unique
     title: String!
     body: String!
+}
+
+type PasswordReset {
+    id: ID! @id
+    resetId: String! @unique
+    user: User! @relation(link: INLINE)
+    expireDate: DateTime!
 }
