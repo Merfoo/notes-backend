@@ -36,6 +36,7 @@ type UserDetailsAndNotes {
 }
 
 type Note {
+    id: ID!
     createdAt: String!
     createdBy: User!
     titleId: String!
