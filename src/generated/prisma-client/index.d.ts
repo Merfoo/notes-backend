@@ -195,7 +195,9 @@ export type NoteOrderByInput =
   | "title_ASC"
   | "title_DESC"
   | "body_ASC"
-  | "body_DESC";
+  | "body_DESC"
+  | "isPrivate_ASC"
+  | "isPrivate_DESC";
 
 export type PasswordResetOrderByInput =
   | "id_ASC"
@@ -290,6 +292,8 @@ export interface NoteWhereInput {
   body_not_starts_with?: Maybe<String>;
   body_ends_with?: Maybe<String>;
   body_not_ends_with?: Maybe<String>;
+  isPrivate?: Maybe<Boolean>;
+  isPrivate_not?: Maybe<Boolean>;
   AND?: Maybe<NoteWhereInput[] | NoteWhereInput>;
   OR?: Maybe<NoteWhereInput[] | NoteWhereInput>;
   NOT?: Maybe<NoteWhereInput[] | NoteWhereInput>;
@@ -431,6 +435,7 @@ export interface NoteCreateInput {
   titleId: String;
   title: String;
   body: String;
+  isPrivate: Boolean;
 }
 
 export interface UserCreateOneWithoutNotesInput {
@@ -466,6 +471,7 @@ export interface NoteUpdateInput {
   titleId?: Maybe<String>;
   title?: Maybe<String>;
   body?: Maybe<String>;
+  isPrivate?: Maybe<Boolean>;
 }
 
 export interface UserUpdateOneRequiredWithoutNotesInput {
@@ -590,6 +596,7 @@ export interface NoteUpdateManyMutationInput {
   titleId?: Maybe<String>;
   title?: Maybe<String>;
   body?: Maybe<String>;
+  isPrivate?: Maybe<Boolean>;
 }
 
 export interface PasswordResetCreateInput {
@@ -624,6 +631,7 @@ export interface NoteCreateWithoutCreatedByInput {
   titleId: String;
   title: String;
   body: String;
+  isPrivate: Boolean;
 }
 
 export interface PasswordResetUpdateInput {
@@ -677,6 +685,7 @@ export interface NoteUpdateWithoutCreatedByDataInput {
   titleId?: Maybe<String>;
   title?: Maybe<String>;
   body?: Maybe<String>;
+  isPrivate?: Maybe<Boolean>;
 }
 
 export interface NoteUpsertWithWhereUniqueWithoutCreatedByInput {
@@ -750,6 +759,8 @@ export interface NoteScalarWhereInput {
   body_not_starts_with?: Maybe<String>;
   body_ends_with?: Maybe<String>;
   body_not_ends_with?: Maybe<String>;
+  isPrivate?: Maybe<Boolean>;
+  isPrivate_not?: Maybe<Boolean>;
   AND?: Maybe<NoteScalarWhereInput[] | NoteScalarWhereInput>;
   OR?: Maybe<NoteScalarWhereInput[] | NoteScalarWhereInput>;
   NOT?: Maybe<NoteScalarWhereInput[] | NoteScalarWhereInput>;
@@ -764,6 +775,7 @@ export interface NoteUpdateManyDataInput {
   titleId?: Maybe<String>;
   title?: Maybe<String>;
   body?: Maybe<String>;
+  isPrivate?: Maybe<Boolean>;
 }
 
 export interface UserUpsertWithoutPasswordResetsInput {
@@ -848,6 +860,7 @@ export interface Note {
   titleId: String;
   title: String;
   body: String;
+  isPrivate: Boolean;
 }
 
 export interface NotePromise extends Promise<Note>, Fragmentable {
@@ -857,6 +870,7 @@ export interface NotePromise extends Promise<Note>, Fragmentable {
   titleId: () => Promise<String>;
   title: () => Promise<String>;
   body: () => Promise<String>;
+  isPrivate: () => Promise<Boolean>;
 }
 
 export interface NoteSubscription
@@ -868,6 +882,7 @@ export interface NoteSubscription
   titleId: () => Promise<AsyncIterator<String>>;
   title: () => Promise<AsyncIterator<String>>;
   body: () => Promise<AsyncIterator<String>>;
+  isPrivate: () => Promise<AsyncIterator<Boolean>>;
 }
 
 export interface NoteNullablePromise
@@ -879,6 +894,7 @@ export interface NoteNullablePromise
   titleId: () => Promise<String>;
   title: () => Promise<String>;
   body: () => Promise<String>;
+  isPrivate: () => Promise<Boolean>;
 }
 
 export interface User {
@@ -1240,6 +1256,7 @@ export interface NotePreviousValues {
   titleId: String;
   title: String;
   body: String;
+  isPrivate: Boolean;
 }
 
 export interface NotePreviousValuesPromise
@@ -1250,6 +1267,7 @@ export interface NotePreviousValuesPromise
   titleId: () => Promise<String>;
   title: () => Promise<String>;
   body: () => Promise<String>;
+  isPrivate: () => Promise<Boolean>;
 }
 
 export interface NotePreviousValuesSubscription
@@ -1260,6 +1278,7 @@ export interface NotePreviousValuesSubscription
   titleId: () => Promise<AsyncIterator<String>>;
   title: () => Promise<AsyncIterator<String>>;
   body: () => Promise<AsyncIterator<String>>;
+  isPrivate: () => Promise<AsyncIterator<Boolean>>;
 }
 
 export interface PasswordResetSubscriptionPayload {
@@ -1384,14 +1403,14 @@ DateTime scalar output type, which is always a string
 export type DateTimeOutput = string;
 
 /*
-The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.
-*/
-export type Int = number;
-
-/*
 The `Boolean` scalar type represents `true` or `false`.
 */
 export type Boolean = boolean;
+
+/*
+The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.
+*/
+export type Int = number;
 
 export type Long = string;
 

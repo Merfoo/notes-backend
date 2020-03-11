@@ -61,6 +61,7 @@ type Note {
   titleId: String!
   title: String!
   body: String!
+  isPrivate: Boolean!
 }
 
 type NoteConnection {
@@ -75,6 +76,7 @@ input NoteCreateInput {
   titleId: String!
   title: String!
   body: String!
+  isPrivate: Boolean!
 }
 
 input NoteCreateManyWithoutCreatedByInput {
@@ -87,6 +89,7 @@ input NoteCreateWithoutCreatedByInput {
   titleId: String!
   title: String!
   body: String!
+  isPrivate: Boolean!
 }
 
 type NoteEdge {
@@ -105,6 +108,8 @@ enum NoteOrderByInput {
   title_DESC
   body_ASC
   body_DESC
+  isPrivate_ASC
+  isPrivate_DESC
 }
 
 type NotePreviousValues {
@@ -113,6 +118,7 @@ type NotePreviousValues {
   titleId: String!
   title: String!
   body: String!
+  isPrivate: Boolean!
 }
 
 input NoteScalarWhereInput {
@@ -180,6 +186,8 @@ input NoteScalarWhereInput {
   body_not_starts_with: String
   body_ends_with: String
   body_not_ends_with: String
+  isPrivate: Boolean
+  isPrivate_not: Boolean
   AND: [NoteScalarWhereInput!]
   OR: [NoteScalarWhereInput!]
   NOT: [NoteScalarWhereInput!]
@@ -208,18 +216,21 @@ input NoteUpdateInput {
   titleId: String
   title: String
   body: String
+  isPrivate: Boolean
 }
 
 input NoteUpdateManyDataInput {
   titleId: String
   title: String
   body: String
+  isPrivate: Boolean
 }
 
 input NoteUpdateManyMutationInput {
   titleId: String
   title: String
   body: String
+  isPrivate: Boolean
 }
 
 input NoteUpdateManyWithoutCreatedByInput {
@@ -243,6 +254,7 @@ input NoteUpdateWithoutCreatedByDataInput {
   titleId: String
   title: String
   body: String
+  isPrivate: Boolean
 }
 
 input NoteUpdateWithWhereUniqueWithoutCreatedByInput {
@@ -322,6 +334,8 @@ input NoteWhereInput {
   body_not_starts_with: String
   body_ends_with: String
   body_not_ends_with: String
+  isPrivate: Boolean
+  isPrivate_not: Boolean
   AND: [NoteWhereInput!]
   OR: [NoteWhereInput!]
   NOT: [NoteWhereInput!]

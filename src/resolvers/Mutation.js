@@ -140,45 +140,56 @@ async function resetPassword(parent, { resetId, password }, context) {
     return res;
 }
 
-async function createNote(parent, { title, body }, context){
+async function createNote(parent, { title, body, isPrivate }, context) {
     const userId = getUserId(context);
+
+    if (!userId)
+        throw new Error("Not authenticated");
+
     const titleId = `${title.replace(/ /g, "-")}-${generateCombination(2, "")}`.toLowerCase();
 
     const note = await context.prisma.createNote({
         createdBy: { connect: { id: userId } },
         titleId,
         title,
-        body
+        body,
+        isPrivate
     });
 
     return note;
 }
 
-async function updateNote(parent, { titleId, body }, context){
+async function updateNote(parent, { titleId, body, isPrivate }, context) {
     const userId = getUserId(context);
+
+    if (!userId)
+        throw new Error("Not authenticated");
+
     const { id: noteUserId } = await context.prisma.note({ titleId }).createdBy();
 
     if (userId !== noteUserId)
         throw new Error("Unauthorized user");
 
     const note = await context.prisma.updateNote({
-        data: { body },
+        data: { body, isPrivate },
         where: { titleId }
     });
 
     return note;
 }
 
-async function deleteNote(parent, { titleId }, context){
+async function deleteNote(parent, { titleId }, context) {
     const userId = getUserId(context);
+
+    if (!userId)
+        throw new Error("Not authenticated");
+
     const { id: noteUserId } = await context.prisma.note({ titleId }).createdBy();
 
     if (userId !== noteUserId)
         throw new Error("Unauthorized user");
 
-    const note = await context.prisma.deleteNote({
-        titleId
-    });
+    await context.prisma.deleteNote({ titleId });
 
     return titleId;
 }

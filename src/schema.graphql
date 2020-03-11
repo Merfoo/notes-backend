@@ -1,28 +1,3 @@
-type Query {
-    getNotes(username: String, filter: String, skip: Int, first: Int, orderBy: NoteOrderByInput): Notes!
-    getNote(titleId: String!): Note!
-    getUser(username: String!): User
-}
-
-type Mutation {
-    signup(email: String!, username: String!, password: String!): AuthPayload!
-    login(email: String!, password: String!): AuthPayload!
-    emailPasswordReset(email: String!): String!
-    resetPassword(resetId: String!, password: String!): AuthPayload
-    createNote(title: String!, body: String!): Note!
-    updateNote(titleId: String!, body: String!): Note!
-    deleteNote(titleId: String!): String!
-}
-
-type User {
-    id: ID!
-    createdAt: String!
-    email: String!
-    username: String!
-    notes: [Note!]!
-    passwordResets: [PasswordReset!]!
-}
-
 enum NoteOrderByInput {
     createdAt_ASC
     createdAt_DESC
@@ -32,20 +7,41 @@ enum NoteOrderByInput {
     body_DESC
 }
 
+type Query {
+    getPublicNotes(username: String, filter: String, skip: Int, first: Int, orderBy: NoteOrderByInput): Notes!
+    getNote(titleId: String!): Note
+    getUser(username: String!): UserDetailsAndNotes
+}
+
+type Mutation {
+    signup(email: String!, username: String!, password: String!): AuthPayload!
+    login(email: String!, password: String!): AuthPayload!
+    emailPasswordReset(email: String!): String!
+    resetPassword(resetId: String!, password: String!): AuthPayload
+    createNote(title: String!, body: String!, isPrivate: Boolean!): Note!
+    updateNote(titleId: String!, body: String!, isPrivate: Boolean!): Note!
+    deleteNote(titleId: String!): String!
+}
+
+type User {
+    createdAt: String!
+    username: String!
+}
+
+type UserDetailsAndNotes {
+    createdAt: String!
+    username: String!
+    email: String!
+    notes: [Note!]!
+}
+
 type Note {
-    id: ID!
     createdAt: String!
     createdBy: User!
     titleId: String!
     title: String!
     body: String!
-}
-
-type PasswordReset {
-    id: ID!
-    resetId: String!
-    user: User!
-    expireDate: String! 
+    isPrivate: Boolean!
 }
 
 type Notes {

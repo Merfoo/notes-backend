@@ -15,6 +15,7 @@ type Note {
     titleId: String! @unique
     title: String!
     body: String!
+    isPrivate: Boolean!
 }
 
 type PasswordReset {
