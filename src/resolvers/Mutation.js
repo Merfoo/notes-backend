@@ -189,9 +189,7 @@ async function deleteNote(parent, { titleId }, context) {
     if (userId !== noteUserId)
         throw new Error("Unauthorized user");
 
-    await context.prisma.deleteNote({ titleId });
-
-    return titleId;
+    return await context.prisma.deleteNote({ titleId });
 }
 
 module.exports = {

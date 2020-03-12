@@ -20,7 +20,7 @@ type Mutation {
     resetPassword(resetId: String!, password: String!): AuthPayload
     createNote(title: String!, body: String!, isPrivate: Boolean!): Note!
     updateNote(titleId: String!, body: String!, isPrivate: Boolean!): Note!
-    deleteNote(titleId: String!): String!
+    deleteNote(titleId: String!): Note!
 }
 
 type User {
