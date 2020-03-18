@@ -192,6 +192,37 @@ async function deleteNote(parent, { titleId }, context) {
     return await context.prisma.deleteNote({ titleId });
 }
 
+async function updateUser(parent, { username, email }, context) {
+    const userId = getUserId(context);
+
+    if (!userId)
+        throw new Error("Not authenticated");
+
+    const user = await context.prisma.user({ username });
+
+    if (user.id !== userId)
+        throw new Error("Unauthorized user");
+
+    return await context.prisma.updateUser({
+        data: { email },
+        where: { username }
+    });
+}
+
+async function deleteUser(parent, { username }, context) {
+    const userId = getUserId(context);
+
+    if (!userId)
+        throw new Error("Not authenticated");
+
+    const user = await context.prisma.user({ username });
+
+    if (user.id !== userId)
+        throw new Error("Unauthorized user");
+
+    return await context.prisma.deleteUser({ username });
+}
+
 module.exports = {
     signup,
     login,
@@ -199,5 +230,7 @@ module.exports = {
     resetPassword,
     createNote,
     updateNote,
-    deleteNote
+    deleteNote,
+    updateUser,
+    deleteUser
 };

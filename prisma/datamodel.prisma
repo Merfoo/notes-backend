@@ -4,8 +4,8 @@ type User {
     email: String! @unique
     username: String! @unique
     password: String!
-    notes: [Note!]!
-    passwordResets: [PasswordReset!]!
+    notes: [Note!]! @relation(onDelete: CASCADE)
+    passwordResets: [PasswordReset!]! @relation(onDelete: CASCADE)
 }
 
 type Note {

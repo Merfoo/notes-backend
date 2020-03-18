@@ -21,6 +21,8 @@ type Mutation {
     createNote(title: String!, body: String!, isPrivate: Boolean!): Note!
     updateNote(titleId: String!, body: String!, isPrivate: Boolean!): Note!
     deleteNote(titleId: String!): Note!
+    updateUser(username: String!, email: String!): User!
+    deleteUser(username: String!): User!
 }
 
 type User {
