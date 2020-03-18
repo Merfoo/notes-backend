@@ -584,6 +584,7 @@ type User {
   id: ID!
   createdAt: DateTime!
   email: String!
+  usernameId: String!
   username: String!
   password: String!
   notes(where: NoteWhereInput, orderBy: NoteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Note!]
@@ -599,6 +600,7 @@ type UserConnection {
 input UserCreateInput {
   id: ID
   email: String!
+  usernameId: String!
   username: String!
   password: String!
   notes: NoteCreateManyWithoutCreatedByInput
@@ -618,6 +620,7 @@ input UserCreateOneWithoutPasswordResetsInput {
 input UserCreateWithoutNotesInput {
   id: ID
   email: String!
+  usernameId: String!
   username: String!
   password: String!
   passwordResets: PasswordResetCreateManyWithoutUserInput
@@ -626,6 +629,7 @@ input UserCreateWithoutNotesInput {
 input UserCreateWithoutPasswordResetsInput {
   id: ID
   email: String!
+  usernameId: String!
   username: String!
   password: String!
   notes: NoteCreateManyWithoutCreatedByInput
@@ -643,6 +647,8 @@ enum UserOrderByInput {
   createdAt_DESC
   email_ASC
   email_DESC
+  usernameId_ASC
+  usernameId_DESC
   username_ASC
   username_DESC
   password_ASC
@@ -653,6 +659,7 @@ type UserPreviousValues {
   id: ID!
   createdAt: DateTime!
   email: String!
+  usernameId: String!
   username: String!
   password: String!
 }
@@ -677,6 +684,7 @@ input UserSubscriptionWhereInput {
 
 input UserUpdateInput {
   email: String
+  usernameId: String
   username: String
   password: String
   notes: NoteUpdateManyWithoutCreatedByInput
@@ -685,6 +693,7 @@ input UserUpdateInput {
 
 input UserUpdateManyMutationInput {
   email: String
+  usernameId: String
   username: String
   password: String
 }
@@ -705,6 +714,7 @@ input UserUpdateOneRequiredWithoutPasswordResetsInput {
 
 input UserUpdateWithoutNotesDataInput {
   email: String
+  usernameId: String
   username: String
   password: String
   passwordResets: PasswordResetUpdateManyWithoutUserInput
@@ -712,6 +722,7 @@ input UserUpdateWithoutNotesDataInput {
 
 input UserUpdateWithoutPasswordResetsDataInput {
   email: String
+  usernameId: String
   username: String
   password: String
   notes: NoteUpdateManyWithoutCreatedByInput
@@ -764,6 +775,20 @@ input UserWhereInput {
   email_not_starts_with: String
   email_ends_with: String
   email_not_ends_with: String
+  usernameId: String
+  usernameId_not: String
+  usernameId_in: [String!]
+  usernameId_not_in: [String!]
+  usernameId_lt: String
+  usernameId_lte: String
+  usernameId_gt: String
+  usernameId_gte: String
+  usernameId_contains: String
+  usernameId_not_contains: String
+  usernameId_starts_with: String
+  usernameId_not_starts_with: String
+  usernameId_ends_with: String
+  usernameId_not_ends_with: String
   username: String
   username_not: String
   username_in: [String!]
@@ -806,6 +831,7 @@ input UserWhereInput {
 input UserWhereUniqueInput {
   id: ID
   email: String
+  usernameId: String
   username: String
 }
 `

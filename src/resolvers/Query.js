@@ -3,8 +3,11 @@ const { getUserId } = require("../utils");
 async function getPublicNotes(parent, { username, filter, skip, first, orderBy }, context) {
     let where = { isPrivate: false };
 
-    if (username)
-        where["createdBy"] = { username };
+    if (username) {
+        const usernameId = username.toLowerCase();
+
+        where["createdBy"] = { usernameId };
+    }
 
     if (filter) {
         where["OR"] = [
@@ -61,7 +64,8 @@ async function getNote(parent, { titleId }, context) {
 }
 
 async function getUser(parent, { username }, context) {
-    const user = await context.prisma.user({ username });
+    const usernameId = username.toLowerCase();
+    const user = await context.prisma.user({ usernameId });
     
     if (!user)
         return null;
@@ -77,11 +81,11 @@ async function getUser(parent, { username }, context) {
 
     if (userId && userId === user.id) {
         res.email = user.email;
-        res.notes = await context.prisma.user({ username }).notes();
+        res.notes = await context.prisma.user({ usernameId }).notes();
     }
 
     else
-        res.notes = await context.prisma.user({ username }).notes({ where: { isPrivate: false } });
+        res.notes = await context.prisma.user({ usernameId }).notes({ where: { isPrivate: false } });
 
     return res;
 }

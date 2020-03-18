@@ -14,7 +14,16 @@ function getUserId(context) {
     return null;
 }
 
+function createURL(text) {
+    let url = text.toLowerCase();
+    url = url.replace(/ /g, "-");
+    url = url.replace(/[^a-zA-Z0-9_-]/g, "");
+
+    return url;
+}
+
 module.exports = {
     getUserId,
+    createURL,
     APP_SECRET
 };

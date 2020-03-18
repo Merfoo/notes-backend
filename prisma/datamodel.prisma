@@ -2,6 +2,7 @@ type User {
     id: ID! @id
     createdAt: DateTime! @createdAt
     email: String! @unique
+    usernameId: String! @unique
     username: String! @unique
     password: String!
     notes: [Note!]! @relation(onDelete: CASCADE)

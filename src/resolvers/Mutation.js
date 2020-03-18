@@ -3,13 +3,18 @@ const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 const nanoid = require("nanoid");
 const { generateCombination } = require("gfycat-style-urls");
-const { APP_SECRET, getUserId } = require("../utils");
+const { APP_SECRET, getUserId, createURL } = require("../utils");
 
 async function signup(parent, { email, username, password }, context) {
+    if (/[^a-zA-Z0-9_-]/g.test(username))
+        throw new Error("Invalid username");
+
+    const usernameId = username.toLowerCase();
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = await context.prisma.createUser({
         email,
+        usernameId,
         username,
         password: hashedPassword
     });
@@ -146,7 +151,7 @@ async function createNote(parent, { title, body, isPrivate }, context) {
     if (!userId)
         throw new Error("Not authenticated");
 
-    const titleId = `${title.replace(/ /g, "-")}-${generateCombination(2, "")}`.toLowerCase();
+    const titleId = createURL(`${title}-${generateCombination(2, "")}`);
 
     const note = await context.prisma.createNote({
         createdBy: { connect: { id: userId } },
@@ -193,34 +198,36 @@ async function deleteNote(parent, { titleId }, context) {
 }
 
 async function updateUser(parent, { username, email }, context) {
+    const usernameId = username.toLowerCase();
     const userId = getUserId(context);
 
     if (!userId)
         throw new Error("Not authenticated");
 
-    const user = await context.prisma.user({ username });
+    const user = await context.prisma.user({ usernameId });
 
     if (user.id !== userId)
         throw new Error("Unauthorized user");
 
     return await context.prisma.updateUser({
         data: { email },
-        where: { username }
+        where: { usernameId }
     });
 }
 
 async function deleteUser(parent, { username }, context) {
+    const usernameId = username.toLowerCase();
     const userId = getUserId(context);
 
     if (!userId)
         throw new Error("Not authenticated");
 
-    const user = await context.prisma.user({ username });
+    const user = await context.prisma.user({ usernameId });
 
     if (user.id !== userId)
         throw new Error("Unauthorized user");
 
-    return await context.prisma.deleteUser({ username });
+    return await context.prisma.deleteUser({ usernameId });
 }
 
 module.exports = {

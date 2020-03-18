@@ -214,6 +214,8 @@ export type UserOrderByInput =
   | "createdAt_DESC"
   | "email_ASC"
   | "email_DESC"
+  | "usernameId_ASC"
+  | "usernameId_DESC"
   | "username_ASC"
   | "username_DESC"
   | "password_ASC"
@@ -336,6 +338,20 @@ export interface UserWhereInput {
   email_not_starts_with?: Maybe<String>;
   email_ends_with?: Maybe<String>;
   email_not_ends_with?: Maybe<String>;
+  usernameId?: Maybe<String>;
+  usernameId_not?: Maybe<String>;
+  usernameId_in?: Maybe<String[] | String>;
+  usernameId_not_in?: Maybe<String[] | String>;
+  usernameId_lt?: Maybe<String>;
+  usernameId_lte?: Maybe<String>;
+  usernameId_gt?: Maybe<String>;
+  usernameId_gte?: Maybe<String>;
+  usernameId_contains?: Maybe<String>;
+  usernameId_not_contains?: Maybe<String>;
+  usernameId_starts_with?: Maybe<String>;
+  usernameId_not_starts_with?: Maybe<String>;
+  usernameId_ends_with?: Maybe<String>;
+  usernameId_not_ends_with?: Maybe<String>;
   username?: Maybe<String>;
   username_not?: Maybe<String>;
   username_in?: Maybe<String[] | String>;
@@ -426,6 +442,7 @@ export type PasswordResetWhereUniqueInput = AtLeastOne<{
 export type UserWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
   email?: Maybe<String>;
+  usernameId?: Maybe<String>;
   username?: Maybe<String>;
 }>;
 
@@ -446,6 +463,7 @@ export interface UserCreateOneWithoutNotesInput {
 export interface UserCreateWithoutNotesInput {
   id?: Maybe<ID_Input>;
   email: String;
+  usernameId: String;
   username: String;
   password: String;
   passwordResets?: Maybe<PasswordResetCreateManyWithoutUserInput>;
@@ -483,6 +501,7 @@ export interface UserUpdateOneRequiredWithoutNotesInput {
 
 export interface UserUpdateWithoutNotesDataInput {
   email?: Maybe<String>;
+  usernameId?: Maybe<String>;
   username?: Maybe<String>;
   password?: Maybe<String>;
   passwordResets?: Maybe<PasswordResetUpdateManyWithoutUserInput>;
@@ -614,6 +633,7 @@ export interface UserCreateOneWithoutPasswordResetsInput {
 export interface UserCreateWithoutPasswordResetsInput {
   id?: Maybe<ID_Input>;
   email: String;
+  usernameId: String;
   username: String;
   password: String;
   notes?: Maybe<NoteCreateManyWithoutCreatedByInput>;
@@ -649,6 +669,7 @@ export interface UserUpdateOneRequiredWithoutPasswordResetsInput {
 
 export interface UserUpdateWithoutPasswordResetsDataInput {
   email?: Maybe<String>;
+  usernameId?: Maybe<String>;
   username?: Maybe<String>;
   password?: Maybe<String>;
   notes?: Maybe<NoteUpdateManyWithoutCreatedByInput>;
@@ -791,6 +812,7 @@ export interface PasswordResetUpdateManyMutationInput {
 export interface UserCreateInput {
   id?: Maybe<ID_Input>;
   email: String;
+  usernameId: String;
   username: String;
   password: String;
   notes?: Maybe<NoteCreateManyWithoutCreatedByInput>;
@@ -799,6 +821,7 @@ export interface UserCreateInput {
 
 export interface UserUpdateInput {
   email?: Maybe<String>;
+  usernameId?: Maybe<String>;
   username?: Maybe<String>;
   password?: Maybe<String>;
   notes?: Maybe<NoteUpdateManyWithoutCreatedByInput>;
@@ -807,6 +830,7 @@ export interface UserUpdateInput {
 
 export interface UserUpdateManyMutationInput {
   email?: Maybe<String>;
+  usernameId?: Maybe<String>;
   username?: Maybe<String>;
   password?: Maybe<String>;
 }
@@ -901,6 +925,7 @@ export interface User {
   id: ID_Output;
   createdAt: DateTimeOutput;
   email: String;
+  usernameId: String;
   username: String;
   password: String;
 }
@@ -909,6 +934,7 @@ export interface UserPromise extends Promise<User>, Fragmentable {
   id: () => Promise<ID_Output>;
   createdAt: () => Promise<DateTimeOutput>;
   email: () => Promise<String>;
+  usernameId: () => Promise<String>;
   username: () => Promise<String>;
   password: () => Promise<String>;
   notes: <T = FragmentableArray<Note>>(args?: {
@@ -937,6 +963,7 @@ export interface UserSubscription
   id: () => Promise<AsyncIterator<ID_Output>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   email: () => Promise<AsyncIterator<String>>;
+  usernameId: () => Promise<AsyncIterator<String>>;
   username: () => Promise<AsyncIterator<String>>;
   password: () => Promise<AsyncIterator<String>>;
   notes: <T = Promise<AsyncIterator<NoteSubscription>>>(args?: {
@@ -967,6 +994,7 @@ export interface UserNullablePromise
   id: () => Promise<ID_Output>;
   createdAt: () => Promise<DateTimeOutput>;
   email: () => Promise<String>;
+  usernameId: () => Promise<String>;
   username: () => Promise<String>;
   password: () => Promise<String>;
   notes: <T = FragmentableArray<Note>>(args?: {
@@ -1357,6 +1385,7 @@ export interface UserPreviousValues {
   id: ID_Output;
   createdAt: DateTimeOutput;
   email: String;
+  usernameId: String;
   username: String;
   password: String;
 }
@@ -1367,6 +1396,7 @@ export interface UserPreviousValuesPromise
   id: () => Promise<ID_Output>;
   createdAt: () => Promise<DateTimeOutput>;
   email: () => Promise<String>;
+  usernameId: () => Promise<String>;
   username: () => Promise<String>;
   password: () => Promise<String>;
 }
@@ -1377,6 +1407,7 @@ export interface UserPreviousValuesSubscription
   id: () => Promise<AsyncIterator<ID_Output>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   email: () => Promise<AsyncIterator<String>>;
+  usernameId: () => Promise<AsyncIterator<String>>;
   username: () => Promise<AsyncIterator<String>>;
   password: () => Promise<AsyncIterator<String>>;
 }
