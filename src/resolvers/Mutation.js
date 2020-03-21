@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 const nanoid = require("nanoid");
 const { generateCombination } = require("gfycat-style-urls");
-const { APP_SECRET, getUserId, createURL } = require("../utils");
+const { APP_SECRET, getUserId, slugify } = require("../utils");
 
 async function signup(parent, { email, username, password }, context) {
     if (/[^a-zA-Z0-9_-]/g.test(username))
@@ -151,11 +151,11 @@ async function createNote(parent, { title, body, isPrivate }, context) {
     if (!userId)
         throw new Error("Not authenticated");
 
-    const titleId = createURL(`${title}-${generateCombination(2, "")}`);
+    const slugId = generateCombination(2, "").toLowerCase();
 
     const note = await context.prisma.createNote({
         createdBy: { connect: { id: userId } },
-        titleId,
+        slugId,
         title,
         body,
         isPrivate
@@ -164,37 +164,37 @@ async function createNote(parent, { title, body, isPrivate }, context) {
     return note;
 }
 
-async function updateNote(parent, { titleId, body, isPrivate }, context) {
+async function updateNote(parent, { slugId, title, body, isPrivate }, context) {
     const userId = getUserId(context);
 
     if (!userId)
         throw new Error("Not authenticated");
 
-    const { id: noteUserId } = await context.prisma.note({ titleId }).createdBy();
+    const { id: noteUserId } = await context.prisma.note({ slugId }).createdBy();
 
     if (userId !== noteUserId)
         throw new Error("Unauthorized user");
 
     const note = await context.prisma.updateNote({
-        data: { body, isPrivate },
-        where: { titleId }
+        data: { title, body, isPrivate },
+        where: { slugId }
     });
 
     return note;
 }
 
-async function deleteNote(parent, { titleId }, context) {
+async function deleteNote(parent, { slugId }, context) {
     const userId = getUserId(context);
 
     if (!userId)
         throw new Error("Not authenticated");
 
-    const { id: noteUserId } = await context.prisma.note({ titleId }).createdBy();
+    const { id: noteUserId } = await context.prisma.note({ slugId }).createdBy();
 
     if (userId !== noteUserId)
         throw new Error("Unauthorized user");
 
-    return await context.prisma.deleteNote({ titleId });
+    return await context.prisma.deleteNote({ slugId });
 }
 
 async function updateUser(parent, { username, email }, context) {

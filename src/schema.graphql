@@ -9,7 +9,7 @@ enum NoteOrderByInput {
 
 type Query {
     getPublicNotes(username: String, filter: String, skip: Int, first: Int, orderBy: NoteOrderByInput): Notes!
-    getNote(titleId: String!): Note
+    getNote(slugId: String!): Note
     getUser(username: String!): UserDetailsAndNotes
 }
 
@@ -19,8 +19,8 @@ type Mutation {
     emailPasswordReset(email: String!): String!
     resetPassword(resetId: String!, password: String!): AuthPayload
     createNote(title: String!, body: String!, isPrivate: Boolean!): Note!
-    updateNote(titleId: String!, body: String!, isPrivate: Boolean!): Note!
-    deleteNote(titleId: String!): Note!
+    updateNote(slugId: String!, title: String!, body: String!, isPrivate: Boolean!): Note!
+    deleteNote(slugId: String!): Note!
     updateUser(username: String!, email: String!): User!
     deleteUser(username: String!): User!
 }
@@ -38,10 +38,10 @@ type UserDetailsAndNotes {
 }
 
 type Note {
-    id: ID!
     createdAt: String!
     createdBy: User!
-    titleId: String!
+    slugId: String!
+    slug: String!
     title: String!
     body: String!
     isPrivate: Boolean!

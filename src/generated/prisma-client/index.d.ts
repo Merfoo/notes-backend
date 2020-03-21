@@ -190,8 +190,8 @@ export type NoteOrderByInput =
   | "id_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
-  | "titleId_ASC"
-  | "titleId_DESC"
+  | "slugId_ASC"
+  | "slugId_DESC"
   | "title_ASC"
   | "title_DESC"
   | "body_ASC"
@@ -225,7 +225,7 @@ export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
 export type NoteWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
-  titleId?: Maybe<String>;
+  slugId?: Maybe<String>;
 }>;
 
 export interface NoteWhereInput {
@@ -252,20 +252,20 @@ export interface NoteWhereInput {
   createdAt_gt?: Maybe<DateTimeInput>;
   createdAt_gte?: Maybe<DateTimeInput>;
   createdBy?: Maybe<UserWhereInput>;
-  titleId?: Maybe<String>;
-  titleId_not?: Maybe<String>;
-  titleId_in?: Maybe<String[] | String>;
-  titleId_not_in?: Maybe<String[] | String>;
-  titleId_lt?: Maybe<String>;
-  titleId_lte?: Maybe<String>;
-  titleId_gt?: Maybe<String>;
-  titleId_gte?: Maybe<String>;
-  titleId_contains?: Maybe<String>;
-  titleId_not_contains?: Maybe<String>;
-  titleId_starts_with?: Maybe<String>;
-  titleId_not_starts_with?: Maybe<String>;
-  titleId_ends_with?: Maybe<String>;
-  titleId_not_ends_with?: Maybe<String>;
+  slugId?: Maybe<String>;
+  slugId_not?: Maybe<String>;
+  slugId_in?: Maybe<String[] | String>;
+  slugId_not_in?: Maybe<String[] | String>;
+  slugId_lt?: Maybe<String>;
+  slugId_lte?: Maybe<String>;
+  slugId_gt?: Maybe<String>;
+  slugId_gte?: Maybe<String>;
+  slugId_contains?: Maybe<String>;
+  slugId_not_contains?: Maybe<String>;
+  slugId_starts_with?: Maybe<String>;
+  slugId_not_starts_with?: Maybe<String>;
+  slugId_ends_with?: Maybe<String>;
+  slugId_not_ends_with?: Maybe<String>;
   title?: Maybe<String>;
   title_not?: Maybe<String>;
   title_in?: Maybe<String[] | String>;
@@ -449,7 +449,7 @@ export type UserWhereUniqueInput = AtLeastOne<{
 export interface NoteCreateInput {
   id?: Maybe<ID_Input>;
   createdBy: UserCreateOneWithoutNotesInput;
-  titleId: String;
+  slugId: String;
   title: String;
   body: String;
   isPrivate: Boolean;
@@ -486,7 +486,7 @@ export interface PasswordResetCreateWithoutUserInput {
 
 export interface NoteUpdateInput {
   createdBy?: Maybe<UserUpdateOneRequiredWithoutNotesInput>;
-  titleId?: Maybe<String>;
+  slugId?: Maybe<String>;
   title?: Maybe<String>;
   body?: Maybe<String>;
   isPrivate?: Maybe<Boolean>;
@@ -612,7 +612,7 @@ export interface UserUpsertWithoutNotesInput {
 }
 
 export interface NoteUpdateManyMutationInput {
-  titleId?: Maybe<String>;
+  slugId?: Maybe<String>;
   title?: Maybe<String>;
   body?: Maybe<String>;
   isPrivate?: Maybe<Boolean>;
@@ -648,7 +648,7 @@ export interface NoteCreateManyWithoutCreatedByInput {
 
 export interface NoteCreateWithoutCreatedByInput {
   id?: Maybe<ID_Input>;
-  titleId: String;
+  slugId: String;
   title: String;
   body: String;
   isPrivate: Boolean;
@@ -703,7 +703,7 @@ export interface NoteUpdateWithWhereUniqueWithoutCreatedByInput {
 }
 
 export interface NoteUpdateWithoutCreatedByDataInput {
-  titleId?: Maybe<String>;
+  slugId?: Maybe<String>;
   title?: Maybe<String>;
   body?: Maybe<String>;
   isPrivate?: Maybe<Boolean>;
@@ -738,20 +738,20 @@ export interface NoteScalarWhereInput {
   createdAt_lte?: Maybe<DateTimeInput>;
   createdAt_gt?: Maybe<DateTimeInput>;
   createdAt_gte?: Maybe<DateTimeInput>;
-  titleId?: Maybe<String>;
-  titleId_not?: Maybe<String>;
-  titleId_in?: Maybe<String[] | String>;
-  titleId_not_in?: Maybe<String[] | String>;
-  titleId_lt?: Maybe<String>;
-  titleId_lte?: Maybe<String>;
-  titleId_gt?: Maybe<String>;
-  titleId_gte?: Maybe<String>;
-  titleId_contains?: Maybe<String>;
-  titleId_not_contains?: Maybe<String>;
-  titleId_starts_with?: Maybe<String>;
-  titleId_not_starts_with?: Maybe<String>;
-  titleId_ends_with?: Maybe<String>;
-  titleId_not_ends_with?: Maybe<String>;
+  slugId?: Maybe<String>;
+  slugId_not?: Maybe<String>;
+  slugId_in?: Maybe<String[] | String>;
+  slugId_not_in?: Maybe<String[] | String>;
+  slugId_lt?: Maybe<String>;
+  slugId_lte?: Maybe<String>;
+  slugId_gt?: Maybe<String>;
+  slugId_gte?: Maybe<String>;
+  slugId_contains?: Maybe<String>;
+  slugId_not_contains?: Maybe<String>;
+  slugId_starts_with?: Maybe<String>;
+  slugId_not_starts_with?: Maybe<String>;
+  slugId_ends_with?: Maybe<String>;
+  slugId_not_ends_with?: Maybe<String>;
   title?: Maybe<String>;
   title_not?: Maybe<String>;
   title_in?: Maybe<String[] | String>;
@@ -793,7 +793,7 @@ export interface NoteUpdateManyWithWhereNestedInput {
 }
 
 export interface NoteUpdateManyDataInput {
-  titleId?: Maybe<String>;
+  slugId?: Maybe<String>;
   title?: Maybe<String>;
   body?: Maybe<String>;
   isPrivate?: Maybe<Boolean>;
@@ -881,7 +881,7 @@ export interface NodeNode {
 export interface Note {
   id: ID_Output;
   createdAt: DateTimeOutput;
-  titleId: String;
+  slugId: String;
   title: String;
   body: String;
   isPrivate: Boolean;
@@ -891,7 +891,7 @@ export interface NotePromise extends Promise<Note>, Fragmentable {
   id: () => Promise<ID_Output>;
   createdAt: () => Promise<DateTimeOutput>;
   createdBy: <T = UserPromise>() => T;
-  titleId: () => Promise<String>;
+  slugId: () => Promise<String>;
   title: () => Promise<String>;
   body: () => Promise<String>;
   isPrivate: () => Promise<Boolean>;
@@ -903,7 +903,7 @@ export interface NoteSubscription
   id: () => Promise<AsyncIterator<ID_Output>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   createdBy: <T = UserSubscription>() => T;
-  titleId: () => Promise<AsyncIterator<String>>;
+  slugId: () => Promise<AsyncIterator<String>>;
   title: () => Promise<AsyncIterator<String>>;
   body: () => Promise<AsyncIterator<String>>;
   isPrivate: () => Promise<AsyncIterator<Boolean>>;
@@ -915,7 +915,7 @@ export interface NoteNullablePromise
   id: () => Promise<ID_Output>;
   createdAt: () => Promise<DateTimeOutput>;
   createdBy: <T = UserPromise>() => T;
-  titleId: () => Promise<String>;
+  slugId: () => Promise<String>;
   title: () => Promise<String>;
   body: () => Promise<String>;
   isPrivate: () => Promise<Boolean>;
@@ -1281,7 +1281,7 @@ export interface NoteSubscriptionPayloadSubscription
 export interface NotePreviousValues {
   id: ID_Output;
   createdAt: DateTimeOutput;
-  titleId: String;
+  slugId: String;
   title: String;
   body: String;
   isPrivate: Boolean;
@@ -1292,7 +1292,7 @@ export interface NotePreviousValuesPromise
     Fragmentable {
   id: () => Promise<ID_Output>;
   createdAt: () => Promise<DateTimeOutput>;
-  titleId: () => Promise<String>;
+  slugId: () => Promise<String>;
   title: () => Promise<String>;
   body: () => Promise<String>;
   isPrivate: () => Promise<Boolean>;
@@ -1303,7 +1303,7 @@ export interface NotePreviousValuesSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  titleId: () => Promise<AsyncIterator<String>>;
+  slugId: () => Promise<AsyncIterator<String>>;
   title: () => Promise<AsyncIterator<String>>;
   body: () => Promise<AsyncIterator<String>>;
   isPrivate: () => Promise<AsyncIterator<Boolean>>;

@@ -13,7 +13,7 @@ type Note {
     id: ID! @id
     createdAt: DateTime! @createdAt
     createdBy: User! @relation(link: INLINE)
-    titleId: String! @unique
+    slugId: String! @unique
     title: String!
     body: String!
     isPrivate: Boolean!

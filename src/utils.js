@@ -14,16 +14,17 @@ function getUserId(context) {
     return null;
 }
 
-function createURL(text) {
-    let url = text.toLowerCase();
-    url = url.replace(/ /g, "-");
-    url = url.replace(/[^a-zA-Z0-9_-]/g, "");
+// Slugify text, convert text to URL friendly text
+function slugify(text) {
+    let slug = text.toLowerCase();
+    slug = slug.replace(/ /g, "-");
+    slug = slug.replace(/[^a-zA-Z0-9_-]/g, "");
 
-    return url;
+    return slug;
 }
 
 module.exports = {
     getUserId,
-    createURL,
+    slugify,
     APP_SECRET
 };

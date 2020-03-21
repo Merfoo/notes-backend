@@ -58,7 +58,7 @@ type Note {
   id: ID!
   createdAt: DateTime!
   createdBy: User!
-  titleId: String!
+  slugId: String!
   title: String!
   body: String!
   isPrivate: Boolean!
@@ -73,7 +73,7 @@ type NoteConnection {
 input NoteCreateInput {
   id: ID
   createdBy: UserCreateOneWithoutNotesInput!
-  titleId: String!
+  slugId: String!
   title: String!
   body: String!
   isPrivate: Boolean!
@@ -86,7 +86,7 @@ input NoteCreateManyWithoutCreatedByInput {
 
 input NoteCreateWithoutCreatedByInput {
   id: ID
-  titleId: String!
+  slugId: String!
   title: String!
   body: String!
   isPrivate: Boolean!
@@ -102,8 +102,8 @@ enum NoteOrderByInput {
   id_DESC
   createdAt_ASC
   createdAt_DESC
-  titleId_ASC
-  titleId_DESC
+  slugId_ASC
+  slugId_DESC
   title_ASC
   title_DESC
   body_ASC
@@ -115,7 +115,7 @@ enum NoteOrderByInput {
 type NotePreviousValues {
   id: ID!
   createdAt: DateTime!
-  titleId: String!
+  slugId: String!
   title: String!
   body: String!
   isPrivate: Boolean!
@@ -144,20 +144,20 @@ input NoteScalarWhereInput {
   createdAt_lte: DateTime
   createdAt_gt: DateTime
   createdAt_gte: DateTime
-  titleId: String
-  titleId_not: String
-  titleId_in: [String!]
-  titleId_not_in: [String!]
-  titleId_lt: String
-  titleId_lte: String
-  titleId_gt: String
-  titleId_gte: String
-  titleId_contains: String
-  titleId_not_contains: String
-  titleId_starts_with: String
-  titleId_not_starts_with: String
-  titleId_ends_with: String
-  titleId_not_ends_with: String
+  slugId: String
+  slugId_not: String
+  slugId_in: [String!]
+  slugId_not_in: [String!]
+  slugId_lt: String
+  slugId_lte: String
+  slugId_gt: String
+  slugId_gte: String
+  slugId_contains: String
+  slugId_not_contains: String
+  slugId_starts_with: String
+  slugId_not_starts_with: String
+  slugId_ends_with: String
+  slugId_not_ends_with: String
   title: String
   title_not: String
   title_in: [String!]
@@ -213,21 +213,21 @@ input NoteSubscriptionWhereInput {
 
 input NoteUpdateInput {
   createdBy: UserUpdateOneRequiredWithoutNotesInput
-  titleId: String
+  slugId: String
   title: String
   body: String
   isPrivate: Boolean
 }
 
 input NoteUpdateManyDataInput {
-  titleId: String
+  slugId: String
   title: String
   body: String
   isPrivate: Boolean
 }
 
 input NoteUpdateManyMutationInput {
-  titleId: String
+  slugId: String
   title: String
   body: String
   isPrivate: Boolean
@@ -251,7 +251,7 @@ input NoteUpdateManyWithWhereNestedInput {
 }
 
 input NoteUpdateWithoutCreatedByDataInput {
-  titleId: String
+  slugId: String
   title: String
   body: String
   isPrivate: Boolean
@@ -292,20 +292,20 @@ input NoteWhereInput {
   createdAt_gt: DateTime
   createdAt_gte: DateTime
   createdBy: UserWhereInput
-  titleId: String
-  titleId_not: String
-  titleId_in: [String!]
-  titleId_not_in: [String!]
-  titleId_lt: String
-  titleId_lte: String
-  titleId_gt: String
-  titleId_gte: String
-  titleId_contains: String
-  titleId_not_contains: String
-  titleId_starts_with: String
-  titleId_not_starts_with: String
-  titleId_ends_with: String
-  titleId_not_ends_with: String
+  slugId: String
+  slugId_not: String
+  slugId_in: [String!]
+  slugId_not_in: [String!]
+  slugId_lt: String
+  slugId_lte: String
+  slugId_gt: String
+  slugId_gte: String
+  slugId_contains: String
+  slugId_not_contains: String
+  slugId_starts_with: String
+  slugId_not_starts_with: String
+  slugId_ends_with: String
+  slugId_not_ends_with: String
   title: String
   title_not: String
   title_in: [String!]
@@ -343,7 +343,7 @@ input NoteWhereInput {
 
 input NoteWhereUniqueInput {
   id: ID
-  titleId: String
+  slugId: String
 }
 
 type PageInfo {

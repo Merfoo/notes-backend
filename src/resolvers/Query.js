@@ -36,10 +36,8 @@ async function getPublicNotes(parent, { username, filter, skip, first, orderBy }
     };
 }
 
-async function getNote(parent, { titleId }, context) {
-    const note = await context.prisma.note({
-        titleId
-    });
+async function getNote(parent, { slugId }, context) {
+    const note = await context.prisma.note({ slugId });
 
     if (!note)
         return null;
@@ -50,7 +48,7 @@ async function getNote(parent, { titleId }, context) {
         const userId = getUserId(context);
 
         if (userId) {
-            const createdBy = await context.prisma.note({ titleId }).createdBy();
+            const createdBy = await context.prisma.note({ slugId }).createdBy();
 
             if (userId === createdBy.id)
                 res = note;
